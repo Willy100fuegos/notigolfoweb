@@ -104,4 +104,52 @@ function parseFrontmatter($content) {
     
     return $result;
 }
+
+/**
+ * DEPRECADA: Genera un excerpt (resumen) dinámico de una noticia
+ * 
+ * ⚠️ NOTA: Esta función se manteniene solo por compatibilidad.
+ * Los excerpts ahora se generan en TIEMPO DE INDEXACIÓN en indexer.php
+ * para optimizar performance en tiempo de lectura.
+ * 
+ * @param array $post - Datos del post con 'excerpt', 'description', 'content'
+ * @param int $length - Longitud máxima del excerpt (120-150 caracteres recomendado)
+ * @return string - Excerpt limpio o texto por defecto
+ */
+function generateExcerpt($post, $length = 130) {
+    // 1. Preferencia: campo excerpt del frontmatter
+    if (!empty($post['excerpt'])) {
+        return htmlspecialchars(trim($post['excerpt']));
+    }
+    
+    // 2. Alternativa: campo description del frontmatter
+    if (!empty($post['description'])) {
+        return htmlspecialchars(trim($post['description']));
+    }
+    
+    // 3. Fallback: primeros caracteres del contenido
+    $content = $post['content'] ?? '';
+    if (!empty($content)) {
+        // Limpiar etiquetas markdown/html
+        $cleanText = strip_tags($content);
+        // Remover saltos de línea y espacios extras
+        $cleanText = preg_replace('/\s+/', ' ', trim($cleanText));
+        
+        if (strlen($cleanText) > $length) {
+            $excerpt = substr($cleanText, 0, $length);
+            // Truncar en la última palabra completa
+            $lastSpace = strrpos($excerpt, ' ');
+            if ($lastSpace > 0) {
+                $excerpt = substr($excerpt, 0, $lastSpace);
+            }
+            $excerpt .= '...';
+        } else {
+            $excerpt = $cleanText;
+        }
+        return htmlspecialchars($excerpt);
+    }
+    
+    // 4. Fallback final: texto genérico
+    return htmlspecialchars('Noticia sin descripción disponible.');
+}
 ?>

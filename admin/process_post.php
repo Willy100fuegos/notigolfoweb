@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $category = trim($_POST['category']);
     $isFeatured = isset($_POST['is_featured']) ? 'true' : 'false';
+    $excerpt = trim($_POST['excerpt'] ?? '');  // NUEVO: Capturar excerpt del formulario
     $content = trim($_POST['content']);
 
     $editFile = $_POST['edit_file'] ?? '';
@@ -127,6 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $markdown .= "author_id: \"{$author_id}\"\n";
     $markdown .= "featured_image: \"{$imageName}\"\n";
     $markdown .= "featured: {$isFeatured}\n";
+    // NUEVO: Agregar excerpt si fue proporcionado
+    if (!empty($excerpt)) {
+        $markdown .= "excerpt: \"{$excerpt}\"\n";
+    }
     $markdown .= "---\n\n";
     $markdown .= $content;
 

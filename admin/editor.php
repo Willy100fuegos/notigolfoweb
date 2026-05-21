@@ -116,7 +116,7 @@ $totalNotas = count($allPosts);
 
 // Si se recibe ?edit=file
 $editFile = $_GET['edit'] ?? '';
-$editTitle = ''; $editCategory = 'local'; $editAuthor = 'Redacción NotiGolfo'; $editContent = ''; $editImage = ''; $editFeatured = false;
+$editTitle = ''; $editCategory = 'local'; $editAuthor = 'Redacción NotiGolfo'; $editContent = ''; $editImage = ''; $editFeatured = false; $editExcerpt = '';
 if ($editFile && file_exists('../content/posts/' . $editFile . '.md')) {
     $raw = file_get_contents('../content/posts/' . $editFile . '.md');
     $parsed = parseFrontmatter($raw);
@@ -125,6 +125,7 @@ if ($editFile && file_exists('../content/posts/' . $editFile . '.md')) {
     $editAuthor = $parsed['meta']['author'] ?? 'Redacción NotiGolfo';
     $editImage = $parsed['meta']['featured_image'] ?? '';
     $editFeatured = isset($parsed['meta']['featured']) ? filter_var($parsed['meta']['featured'], FILTER_VALIDATE_BOOLEAN) : false;
+    $editExcerpt = $parsed['meta']['excerpt'] ?? '';  // NUEVO: Cargar excerpt
     $editContent = $parsed['content'] ?? '';
 } else {
     // Default author rules
@@ -413,6 +414,15 @@ $session_user_id = $_SESSION['user_id'] ?? null;
                     <label for="author" class="block text-sm font-bold text-gray-700 mb-2">Autor</label>
                     <input type="text" id="author" name="author" value="<?= htmlspecialchars($editAuthor) ?>" required class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-brand-gold" <?= !$is_admin ? 'readonly' : '' ?>>
                 </div>
+            </div>
+
+            <!-- NUEVO: Campo Excerpt/Resumen -->
+            <div class="mb-6">
+                <label for="excerpt" class="block text-sm font-bold text-gray-700 mb-2">
+                    Resumen / Excerpt <span class="text-gray-500 font-normal text-xs">(Opcional - Máx. 150 caracteres)</span>
+                </label>
+                <input type="text" id="excerpt" name="excerpt" value="<?= htmlspecialchars($editExcerpt) ?>" maxlength="150" placeholder="Ej: Breve resumen que aparecerá en la portada. Si no escribes, se usará automáticamente del contenido." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-brand-gold text-sm">
+                <p class="text-xs text-gray-500 mt-1">Si dejas vacío, el sistema generará automáticamente un resumen de los primeros 150 caracteres del contenido.</p>
             </div>
             
             <div class="mb-6 flex items-center bg-yellow-50 border border-yellow-200 p-4 rounded-lg">

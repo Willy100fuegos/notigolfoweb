@@ -242,7 +242,7 @@ require 'includes/header.php';
                                     <a href="/article.php?id=<?= $mainPost['filename'] ?>" class="hover:text-brand-accent transition"><?= htmlspecialchars($mainPost['title']) ?></a>
                                 </h3>
                                 <p class="text-gray-600 line-clamp-3">
-                                    Esta es una breve descripción o extracto de la noticia. Haz clic para leer el contenido completo de este acontecimiento que marca tendencia en la región y el mundo.
+                                    <?= htmlspecialchars($mainPost['excerpt'] ?? '') ?>
                                 </p>
                             </div>
                         </article>
