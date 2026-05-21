@@ -11,7 +11,7 @@ require_once __DIR__ . '/markdown_parser.php';
  * @param int $length Longitud máxima en caracteres
  * @return string Excerpt limpio o vacío
  */
-function generateExcerptAtIndex($content, $excerpt_meta = '', $description_meta = '', $length = 130) {
+function generateExcerptAtIndex($content, $excerpt_meta = '', $description_meta = '', $length = 230) {
     // 1. Preferencia: campo excerpt del frontmatter
     if (!empty($excerpt_meta)) {
         return trim($excerpt_meta);
@@ -68,7 +68,7 @@ function rebuildPostsIndex() {
                         $parsed['content'],
                         $excerpt_meta,
                         $description_meta,
-                        130
+                        230
                     );
                     
                     // NO guardar el contenido completo (ahorra espacio en JSON)
