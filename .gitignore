@@ -1,2 +1,29 @@
+# IDEs and Editors
 .vscode/
+sftp.json
+*.code-workspace
+
+# Content & dynamic user uploads
 content/
+
+# Secrets and local configurations
+.env*
+!.env.example
+includes/db_config.local.php
+includes/db_connect.local.php
+deploy_secrets.local
+
+# Database dumps, certificates and keys
+*.sql
+*.key
+*.pem
+
+# Logs and error outputs
+*.log
+php_errors.log
+logs/
+
+# Internal security reports & planning notes
+security_audit_report.md
+contexto*.md
+implementation_plan*.md
